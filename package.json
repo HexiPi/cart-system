@@ -1,9 +1,8 @@
 {
   "name": "cart-system-hexipi",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "main": "./lib/CartButton.js",
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
     "bootstrap": "^4.5.0",
     "color-functions-hexipi": "^0.1.5",
     "reactstrap": "^8.5.1",
@@ -28,7 +27,6 @@
     ]
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.11.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
