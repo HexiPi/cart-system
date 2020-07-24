@@ -1,12 +1,13 @@
 {
   "name": "cart-system-hexipi",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "./lib/CartSystem.js",
   "types": "./lib/CartSystem.d.ts",
   "dependencies": {
     "bootstrap": "^4.5.0",
     "color-functions-hexipi": "^0.1.5",
     "reactstrap": "^8.5.1",
+    "svg-url-loader": "^6.0.0",
     "uniqid": "^5.2.0"
   },
   "scripts": {
@@ -50,7 +51,6 @@
     "react-dom": "^16.13.1",
     "source-map-loader": "^1.0.1",
     "style-loader": "^1.2.1",
-    "svg-inline-loader": "^0.8.2",
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",
     "webpack": "^4.43.0",
