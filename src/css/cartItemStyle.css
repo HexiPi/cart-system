@@ -1,0 +1,28 @@
+.cart-item-container {
+    text-align: left;
+    margin: 1rem;
+}
+
+.cart-item-container .cart-item-title {
+    font-weight: bold;
+}
+
+.cart-item-container .cart-item-price {
+    text-indent: 3vmin;
+    /* font-weight: bold; */
+}
+
+.cart-item-container .cart-item-quantity-button-group {
+    float: right;
+}
+
+.cart-item-container .cart-item-quantity-input {
+    max-width: 4rem;
+}
+
+.remove-item-button-container {
+    margin-top: -1.4rem;
+    margin-right: -1.8rem;
+    text-align: right;
+    position: relative;
+}

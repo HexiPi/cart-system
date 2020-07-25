@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { CartButton, AddToCartButton } from './CartSystem.ts';
+import { getCurrentPageBgColor, getMonochromeColor } from 'color-functions-hexipi';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class CartButtonDemo extends Component {
+    state = {
+        cartItems: [],
+        wasItemAdded: false,
+    };
+
+    addItemToCart = (item) => {
+        const currentCart = [...this.state.cartItems];
+        currentCart.push(item);
+
+        this.setState({
+            cartItems: currentCart,
+            wasItemAdded: true,
+        });
+    }
+
+    resetItemAddedFlag = () => this.setState({ wasItemAdded: false });
+    updateCart = (items) => this.setState({ cartItems: items });
+    clearCart = () => this.setState({ cartItems: [] });
+
+    render() {
+        return (
+            <div className="App-header">
+                <CartButton
+                    sidePanelBgColor={getMonochromeColor(getCurrentPageBgColor(), 4)}
+                    cartItems={this.state.cartItems}
+                    wasItemAdded={this.state.wasItemAdded}
+                    resetWasItemAddedFlag={this.resetItemAddedFlag}
+                    updateCart={this.updateCart}
+                    clearCart={this.clearCart}
+                />
+
+                <section>
+                    Test Item #1&nbsp;
+                    <AddToCartButton 
+                        itemData={{ _id: 1, name: "Test Item #1", unit_price: 4.99, quantity: 1 }}
+                        addItemToCart={this.addItemToCart}
+                    />
+                    <br />
+                    <br />
+                    Test Item #2&nbsp;
+                    <AddToCartButton 
+                        itemData={{ _id: 1, name: "Test Item #2", unit_price: 10.99, quantity: 1 }}
+                        addItemToCart={this.addItemToCart}
+                    />
+                </section>
+            </div>
+        );
+    }
 }
 
-export default App;
+export default CartButtonDemo;

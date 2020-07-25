@@ -1,0 +1,50 @@
+{
+  "name": "cart-system-hexipi",
+  "version": "0.0.6",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "color-functions-hexipi": "^0.1.5",
+    "jquery": "^3.5.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-js-snackbar": "^1.0.4",
+    "react-scripts": "3.4.1",
+    "reactstrap": "^8.5.1",
+    "uniqid": "^5.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "tsc": "tsc"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/prop-types": "^15.7.3",
+    "@types/reactstrap": "^8.5.0",
+    "@types/uniqid": "^5.2.0",
+    "css-loader": "^3.6.0",
+    "prop-types": "^15.7.2",
+    "style-loader": "^1.2.1",
+    "typescript": "^3.9.7"
+  },
+  "description": "This is a React.JS UI cart system that can be placed on any react app!",
+  "author": "Jose A. Alvarado",
+  "license": "MIT"
+}

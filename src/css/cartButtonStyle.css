@@ -1,0 +1,127 @@
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.cart-button {
+    top: 0;
+    right: 0;
+    z-index: 9993;
+    position: fixed;
+}
+
+.side-cart-panel {
+    border: thin solid grey;
+    color: black;
+    font-size: large;
+    z-index: 9992;
+    height: 100%;
+    width: 0%;
+    top: 0;
+    right: 0;
+    overflow: auto;
+    position: fixed;
+}
+
+.side-cart-panel.slide-show {
+    transition: 1s;
+    width: 35%;
+}
+
+.side-cart-panel.slide-hide {
+    transition: 1s;
+    width: 0%;
+}
+
+.side-cart-panel .inner-cart-panel {
+    margin-top: 3.5rem;
+}
+
+.side-cart-panel .inner-cart-panel .inner-cart-panel-heading {
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.side-cart-panel.slide-show .inner-cart-panel {
+    display: block;
+}
+
+.side-cart-panel.slide-hide .inner-cart-panel  {
+    display: none;
+}
+
+.cart-transparent-film {
+    background-color: #80808055;
+    z-index: 9991;
+    height: 100%;
+    width: 0%;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+}
+
+.cart-transparent-film.slide-show {
+    width: 100%;
+}
+
+.cart-transparent-film.slide-hide {
+    width: 0%;
+}
+
+.cart-control-button-container {
+    margin: 0.5rem;
+}
+
+.totals-divider {
+    border: solid 0.1px;
+    margin-bottom: 1rem;
+}
+
+.total-container {
+    text-align: right;
+    margin-right: 1rem;
+}
+
+.total-container span {
+    text-decoration: underline;
+}
+
+@media only screen and (max-width: 960px) {
+    .side-cart-panel.slide-show {
+        width: 50%;
+     }
+}
+
+@media only screen and (max-width: 800px) {
+    .side-cart-panel.slide-show {
+        width: 70%;
+     }
+}
+
+@media screen and (max-width: 540px) {
+    .side-cart-panel.slide-show {
+        width: 80%;
+     }
+}
+
+/*@media only screen and (max-width: 540px) or (max-width: 360px) */
+@media screen
+and (device-width: 320px)
+and (device-height: 640px)
+and (-webkit-device-pixel-ratio: 2){
+    .side-cart-panel.slide-show {
+        width: 70%;
+     }
+}
