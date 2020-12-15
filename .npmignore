@@ -7,3 +7,5 @@ package.json.dev
 tsconfig.json
 tsconfig.json.dev
 .vscode
+react-app-env.d.ts
+changes.txt

@@ -2,8 +2,10 @@ import * as React from 'react';
 import { Button, ButtonGroup, Card, CardBody, CardTitle, CardSubtitle, Input } from 'reactstrap';
 import '../css/cartItemStyle.css';
 
-const Close = require('../assets/close-black-18dp.svg') as string;
-const Delete = require('../assets/delete-white-24dp.svg') as string;
+import Close from '../assets/close-black-18dp.svg';
+import Delete from '../assets/delete-white-24dp.svg';
+// const Close = require('../assets/close-black-18dp.svg') as string;
+// const Delete = require('../assets/delete-white-24dp.svg') as string;
 
 interface CartItemData {
     cart_item_id?: string,

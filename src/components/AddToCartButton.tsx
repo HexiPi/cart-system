@@ -1,7 +1,8 @@
 import * as React from 'react';
 // import * as PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
-import * as uniqid from 'uniqid';
+// import * as uniqid from 'uniqid';
+import uniqid from 'uniqid';
 import { CartItemData } from './CartItem';
 
 interface AddToCartButtonProps {
@@ -9,6 +10,7 @@ interface AddToCartButtonProps {
     buttonText?: string,
     buttonColor?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'link',
     doesUpdateQuantity?: boolean,
+    target?: any,
     addItemToCart: (item: CartItemData) => void
 }
 
@@ -18,8 +20,19 @@ const AddToCartButton: React.FunctionComponent<AddToCartButtonProps> = (props: A
         buttonText = 'Add to Cart', 
         buttonColor = 'primary' as 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'link', 
         doesUpdateQuantity = true, 
+        target = null,
         addItemToCart 
     } = props;
+
+    const injectOnClickToTarget = (target: any) => {
+        const targetClass = target.props.class;
+        var targetClassName = target.props.className;
+        
+        if (!targetClassName) targetClassName = "";
+        if (targetClass) targetClassName = `${targetClassName} ${targetClass}`;
+
+        return React.cloneElement(target, { className: `${targetClassName}`, onClick: addToCart });
+    }
 
     const addToCart = () => {
         const item: CartItemData = {
@@ -30,7 +43,7 @@ const AddToCartButton: React.FunctionComponent<AddToCartButtonProps> = (props: A
         addItemToCart(item);
     }
 
-    return <Button color={buttonColor} onClick={addToCart}>{buttonText}</Button>
+    return (target) ? injectOnClickToTarget(target) : <Button color={buttonColor} onClick={addToCart}>{buttonText}</Button>;
 }
 
 //@ts-ignore

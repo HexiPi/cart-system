@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CartButton, AddToCartButton } from './CartSystem.ts';
 import { getCurrentPageBgColor, getMonochromeColor } from 'color-functions-hexipi';
+import CheckoutPage from './checkout';
 import './App.css';
 
 class CartButtonDemo extends Component {
@@ -33,6 +34,7 @@ class CartButtonDemo extends Component {
                     resetWasItemAddedFlag={this.resetItemAddedFlag}
                     updateCart={this.updateCart}
                     clearCart={this.clearCart}
+                    checkoutPage={<CheckoutPage />}
                 />
 
                 <section>
@@ -45,8 +47,9 @@ class CartButtonDemo extends Component {
                     <br />
                     Test Item #2&nbsp;
                     <AddToCartButton 
-                        itemData={{ _id: 1, name: "Test Item #2", unit_price: 10.99, quantity: 1 }}
+                        itemData={{ _id: 2, name: "Test Item #2", unit_price: 10.99, quantity: 1 }}
                         addItemToCart={this.addItemToCart}
+                        target={<button className="button-transparent">Add to Cart</button>}
                     />
                 </section>
             </div>

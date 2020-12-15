@@ -1,24 +1,19 @@
 {
   "name": "cart-system-hexipi",
   "version": "0.1.0",
-  "private": true,
+  "main": "./lib/CartSystem.js",
+  "types": "./lib/CartSystem.d.ts",
   "dependencies": {
-    "bootstrap": "^4.5.3",
+    "bootstrap": "^4.5.0",
     "color-functions-hexipi": "^0.1.7",
     "jquery": "^3.5.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-js-snackbar": "^1.0.4",
-    "react-scripts": "4.0.1",
     "reactstrap": "^8.7.1",
     "uniqid": "^5.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "tsc": "tsc"
+    "prebuild": "tsc",
+    "build": "webpack"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,16 +30,38 @@
       "last 1 safari version"
     ]
   },
+  "peerDependencies": {
+    "color-functions-hexipi": "^0.1.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
   "devDependencies": {
+    "@types/node": "^14.14.13",
     "@types/prop-types": "^15.7.3",
-    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@types/reactstrap": "^8.7.2",
     "@types/uniqid": "^5.2.0",
-    "css-loader": "^5.0.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^3.6.0",
+    "path": "^0.12.7",
     "prop-types": "^15.7.2",
-    "style-loader": "^2.0.0",
-    "typescript": "^4.1.3"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "source-map-loader": "^1.1.3",
+    "style-loader": "^1.2.1",
+    "svg-url-loader": "^6.0.0",
+    "ts-loader": "^8.0.12",
+    "typescript": "^4.1.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "description": "This is a React.JS UI cart system that can be placed on any react app!",
   "author": "Jose A. Alvarado",
   "homepage": "https://github.com/HexiPi/cart-system",

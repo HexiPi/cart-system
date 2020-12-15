@@ -4,11 +4,22 @@ import { CSSProperties } from 'react';
 import ReactSnackBar from 'react-js-snackbar';
 import { getContrastYIQ } from 'color-functions-hexipi';
 import { Button, Badge } from 'reactstrap';
-import { CartItem, CartItemData } from './CartItem';
+import { CartItem, CartItemData, CartItemDataDefaults } from './CartItem';
+import CheckoutModal from './CheckoutModal';
+import EmptyCartModal from './EmptyCartModal';
+import RemoveItemModal from './RemoveItemModal';
 import '../css/cartButtonStyle.css';
 
-const WhiteShoppingCart = require('../assets/shopping_cart-white-24dp.svg') as string;
-const BlackShoppingCart = require('../assets/shopping_cart-black-24dp.svg') as string;
+import WhiteShoppingCart from '../assets/shopping_cart-white-24dp.svg';
+import BlackShoppingCart from '../assets/shopping_cart-black-24dp.svg';
+// const WhiteShoppingCart = require('../assets/shopping_cart-white-24dp.svg') as string;
+// const BlackShoppingCart = require('../assets/shopping_cart-black-24dp.svg') as string;
+
+export interface CartItemsTotalsData {
+    subtotal: number,
+    tax: number,
+    grandTotal: number,
+}
 
 interface CartButtonProps {
     buttonIcon: object,
@@ -19,6 +30,7 @@ interface CartButtonProps {
     taxPercentage: number,
     cartItems: CartItemData[],
     wasItemAdded: boolean,
+    checkoutPage: React.Component,
     resetWasItemAddedFlag: () => void,
     updateCart: (cartItems: CartItemData[]) => void,
     clearCart: () => void
@@ -35,6 +47,17 @@ class CartButton extends React.Component<CartButtonProps, {}> {
 
     state = {
         sidePanelShow: false,
+        showCheckoutModal: false,
+        showEmptyCartModal: false,
+        showRemoveCartItemModal: false,
+        itemForRemoval: { 
+            itemData: CartItemDataDefaults,
+        },
+        totalsData: {
+            subtotal: 0.00,
+            tax: 0.00,
+            grandTotal: 0.00,
+        }
     };
 
     componentDidUpdate = (prevProps: CartButtonProps) => {
@@ -42,6 +65,10 @@ class CartButton extends React.Component<CartButtonProps, {}> {
             setTimeout(() => {
                 this.props.resetWasItemAddedFlag();
             }, 2000);
+        }
+
+        if (JSON.stringify(prevProps.cartItems) !== JSON.stringify(this.props.cartItems)) {
+            this.calculateTotals(this.props.cartItems);
         }
     }
 
@@ -65,32 +92,43 @@ class CartButton extends React.Component<CartButtonProps, {}> {
     }
 
     removeCartItem = (item: CartItemData) => {
-        const res = window.confirm(`Are you sure you want to remove '${item.name}' from your cart?`);
+        const currCart = [...this.props.cartItems];
 
-        if (res) {
-            const currCart = [...this.props.cartItems];
+        const itemIndex = currCart.findIndex(it => it.cart_item_id === item.cart_item_id);
+        
+        if (itemIndex > -1) {
+            currCart.splice(itemIndex, 1);
+        }
 
-            const itemIndex = currCart.findIndex(it => it.cart_item_id === item.cart_item_id);
-            
-            if (itemIndex > -1) {
-                currCart.splice(itemIndex, 1);
-            }
-
-            if (currCart.length === 0) {
-                this.props.clearCart();
-            }
-            else {
-                this.props.updateCart(currCart);
-            }
+        if (currCart.length === 0) {
+            this.props.clearCart();
+        }
+        else {
+            this.props.updateCart(currCart);
         }
     }
 
     emptyCart = () => {
-        const res = window.confirm('Are you sure you want to empty your cart?');
+        this.setState({ showEmptyCartModal: true });
+    }
 
-        if (res) {
-            this.props.clearCart();
-        }
+    calculateTotals = (cartItems: CartItemData[], callback: () => void = () => {}) => {
+        let subtotal = 0.00;
+
+        cartItems.forEach(item => {
+            subtotal += parseFloat(item.unit_price.toString()) * parseInt(item.quantity.toString());
+        });
+
+        const tax = subtotal * (parseFloat(this.props.taxPercentage.toString()) / 100);
+        const grandTotal = subtotal + tax;
+
+        this.setState({
+            totalsData: {
+                subtotal: Number(subtotal.toFixed(2)),
+                tax: Number(tax.toFixed(2)),
+                grandTotal: Number(grandTotal.toFixed(2))
+            }
+        }, callback);
     }
 
     renderCartItems = () => {
@@ -105,7 +143,7 @@ class CartButton extends React.Component<CartButtonProps, {}> {
                     unit_price={item.unit_price}
                     quantity={item.quantity}
                     updateItem={this.updateCartItem}
-                    removeItem={this.removeCartItem} 
+                    removeItem={() => this.setState({ showRemoveCartItemModal: true, itemForRemoval: { itemData: item } })} 
                 />
             );
         });
@@ -118,28 +156,19 @@ class CartButton extends React.Component<CartButtonProps, {}> {
             <div className="cart-control-button-container">
                 <Button color="danger" style={{float: 'left'}} onClick={this.emptyCart}>Empty Cart</Button>
                 &nbsp;
-                <Button color="success" style={{float: 'right'}}>Checkout</Button>
+                <Button color="success" style={{float: 'right'}} onClick={() => this.setState({ showCheckoutModal: !this.state.showCheckoutModal, sidePanelShow: false })}>Checkout</Button>
             </div>
         );
     }
 
     renderTotals = () => {
-        let subtotal = 0.00;
-
-        this.props.cartItems.forEach(item => {
-            subtotal += parseFloat(item.unit_price.toString()) * parseInt(item.quantity.toString());
-        });
-
-        const tax = subtotal * (parseFloat(this.props.taxPercentage.toString()) / 100);
-        const grandTotal = subtotal + tax;
-
         return (
             <div className="total-container" style={{ color: getContrastYIQ(this.props.sidePanelBgColor) }}>
-                <h5><span>Subtotal</span>: ${subtotal.toFixed(2)}</h5>
+                <h5><span>Subtotal</span>: ${this.state.totalsData.subtotal.toFixed(2)}</h5>
                 <br />
-                <h5><span>Tax</span>: ${tax.toFixed(2)}</h5>
+                <h5><span>Tax</span>: ${this.state.totalsData.tax.toFixed(2)}</h5>
                 <br />
-                <h3 style={{fontWeight: 'bolder'}}><span>Total</span>: ${grandTotal.toFixed(2)}</h3>
+                <h3 style={{fontWeight: 'bolder'}}><span>Total</span>: ${this.state.totalsData.grandTotal.toFixed(2)}</h3>
             </div>
         );
     }
@@ -174,6 +203,32 @@ class CartButton extends React.Component<CartButtonProps, {}> {
         );
     };
 
+    renderModals = () => (
+        <div>
+            <CheckoutModal
+                isOpen={this.state.showCheckoutModal}
+                cartItems={this.props.cartItems}
+                totalsData={this.state.totalsData}
+                checkoutPage={this.props.checkoutPage}
+                onCheckoutModalClose={() => this.setState({ showCheckoutModal: false })}
+                onCheckoutModalCancel={() => this.setState({ showCheckoutModal: false, sidePanelShow: true })}
+            />
+
+            <EmptyCartModal
+                isOpen={this.state.showEmptyCartModal}
+                onModalToggle={() => this.setState({ showEmptyCartModal: !this.state.showEmptyCartModal })}
+                onEmptyCart={() => { this.props.clearCart(); this.setState({ showEmptyCartModal: !this.state.showEmptyCartModal }); }}
+            />
+
+            <RemoveItemModal
+                isOpen={this.state.showRemoveCartItemModal}
+                item={this.state.itemForRemoval.itemData}
+                onModalToggle={() => this.setState({ showRemoveCartItemModal: !this.state.showRemoveCartItemModal })}
+                onRemoveItem={() => { this.removeCartItem(this.state.itemForRemoval.itemData); this.setState({ showRemoveCartItemModal: !this.state.showRemoveCartItemModal, itemForRemoval: { itemData: CartItemDataDefaults } }); }}
+            />
+        </div>
+    );
+
     render() {
         const buttonContent = (this.state.sidePanelShow) ? <span style={{fontSize: '1.5em'}}>&times;</span> : <div>{this.renderButtonIcon()}&nbsp;<Badge color="danger">{this.props.cartItems.length}</Badge></div>
         const buttonColor = (this.state.sidePanelShow) ? "danger" : this.props.buttonColor;
@@ -193,6 +248,7 @@ class CartButton extends React.Component<CartButtonProps, {}> {
                     {this.renderInnerCartPanelContent()}
                 </div>
                 <div className={`cart-transparent-film ${(this.state.sidePanelShow) ? "slide-show" : "slide-hide" }`} hidden={(!this.state.sidePanelShow)} onClick={this.cartButtonOnClick}></div>
+                {this.renderModals()}
             </div>
         );
     }
